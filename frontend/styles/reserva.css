@@ -1,0 +1,29 @@
+.mesa {
+    text-align: center;
+  }
+  
+  .mesa-icon:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .mesa.active .mesa-icon {
+    border: 3px solid yellow;
+  }
+  
+  .mesa[data-estado="libre"] .mesa-icon {
+    background-color: #28a745; /* Verde para libre */
+  }
+  
+  .mesa[data-estado="ocupada"] .mesa-icon {
+    background-color: #dc3545; /* Rojo para ocupada */
+  }
+
+.mesa-blue {
+  background-color: rgb(53, 53, 153) !important;
+}
+
+.mesa-gray {
+  background-color: dimgray !important;
+}
+

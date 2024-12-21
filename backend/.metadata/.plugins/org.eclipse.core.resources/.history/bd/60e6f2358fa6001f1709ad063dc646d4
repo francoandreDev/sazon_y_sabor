@@ -1,0 +1,53 @@
+package sazon_y_sabor.negocio.usuarios;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Optional;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+@DataJpaTest
+public class TestUsuarioRepositorio {
+	@Autowired
+    private IUsuarioRepositorio repositorio;
+    @Test
+    void testGuardarYObtenerUsuario() {
+        UsuarioEntidad usuario = new UsuarioEntidad(null, "Laura", "laura@ejemplo.com", "12345", "567890");
+        UsuarioEntidad usuarioGuardado = repositorio.save(usuario);
+        assertThat(usuarioGuardado).isNotNull();
+        assertThat(usuarioGuardado.getId()).isNotNull();
+        assertThat(usuarioGuardado.getCorreo()).isEqualTo("laura@ejemplo.com");
+        assertThat(usuarioGuardado.getNombre()).isEqualTo("Laura");
+    }
+    @Test
+    void testObtenerUsuarioPorId() {
+        UsuarioEntidad usuario = new UsuarioEntidad(null, "Carlos", "carlos@ejemplo.com", "secreta", "123456789");
+        UsuarioEntidad usuarioGuardado = repositorio.save(usuario);
+        Optional<UsuarioEntidad> usuarioRecuperado = repositorio.findById(usuarioGuardado.getId());
+        assertThat(usuarioRecuperado).isPresent(); 
+        assertThat(usuarioRecuperado.get().getCorreo()).isEqualTo("carlos@ejemplo.com");
+        assertThat(usuarioRecuperado.get().getNombre()).isEqualTo("Carlos");
+    }
+    @Test
+    void testEliminarUsuario() {
+        UsuarioEntidad usuario = new UsuarioEntidad(null, "Eliminado", "eliminado@ejemplo.com", "1234", "987654321");
+        UsuarioEntidad usuarioGuardado = repositorio.save(usuario);
+        repositorio.deleteById(usuarioGuardado.getId());
+        Optional<UsuarioEntidad> usuarioEliminado = repositorio.findById(usuarioGuardado.getId());
+        assertThat(usuarioEliminado).isNotPresent();  
+    }
+    @Test
+    void testExistenciaDeUsuarioPorId() {
+        UsuarioEntidad usuario = new UsuarioEntidad(null, "Luis", "luis@ejemplo.com", "password", "123123");
+        UsuarioEntidad usuarioGuardado = repositorio.save(usuario);
+        boolean existe = repositorio.existsById(usuarioGuardado.getId());
+        assertThat(existe).isTrue();
+    }
+    @Test
+    void testNoExistenciaDeUsuarioPorId() {
+        boolean existe = repositorio.existsById(999L);  
+        assertThat(existe).isFalse();
+    }
+}

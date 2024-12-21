@@ -1,0 +1,76 @@
+package sazon_y_sabor.negocio.usuarios;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/v1/usuarios")
+public class UsuarioControlador {
+	@Autowired
+	private UsuarioServicio servicio;
+	@Autowired
+    private UsuarioMapeador mapa;
+	@GetMapping
+	public ResponseEntity<List<UsuarioRes>> obtenerTodos() {
+		List<UsuarioEntidad> usuarios = servicio.obtenerTodos();
+		if (usuarios.size() == 0) return ResponseEntity.noContent().build();
+		List<UsuarioRes> res = usuarios.stream()
+			.map(mapa::obtenerRespuesta)
+			.collect(Collectors.toList());
+		return new ResponseEntity<>(res, HttpStatus.OK);
+	}
+	@GetMapping("/{id}")
+	public ResponseEntity<UsuarioRes> obtenerUno(@PathVariable("id") Long id) {
+		UsuarioEntidad usuario = servicio.obtenerUno(id);
+		if (usuario == null) return ResponseEntity.notFound().build();
+		UsuarioRes res = mapa.obtenerRespuesta(usuario);
+		return new ResponseEntity<>(res, HttpStatus.OK);
+	}
+	@PostMapping
+	public ResponseEntity<UsuarioRes> crear(@RequestBody UsuarioReq req) {
+		UsuarioEntidad usuario = mapa.obtenerEntidad(req);
+		System.out.println("El usuario es: " + usuario.toString());
+		UsuarioEntidad nuevoUsuario = servicio.guardar(usuario);
+		System.out.println("El nuevo usuario es: " + nuevoUsuario);
+		UsuarioRes res = mapa.obtenerRespuesta(nuevoUsuario);
+		return new ResponseEntity<>(res, HttpStatus.CREATED);
+	}
+	@PutMapping("/{id}")
+	public ResponseEntity<UsuarioRes> reemplazar(
+		@PathVariable("id") Long id, @RequestBody UsuarioReq req
+	) {
+		UsuarioEntidad usuario = servicio.obtenerUno(id);
+		if(usuario == null) return ResponseEntity.notFound().build();
+		usuario = mapa.actualizarEntidad(usuario, req);
+		UsuarioEntidad usuarioActualizado = servicio.guardar(usuario);
+		UsuarioRes res = mapa.obtenerRespuesta(usuarioActualizado);
+		return new ResponseEntity<>(res, HttpStatus.OK);
+	}
+	@PatchMapping("/{id}")
+	public ResponseEntity<UsuarioRes> actualizar(
+		@PathVariable("id") Long id, @RequestBody Map<String, Object> campos
+	) {
+		UsuarioEntidad usuario = servicio.obtenerUno(id);
+		if(usuario == null) return ResponseEntity.notFound().build();
+		usuario = mapa.actualizarParcialEntidad(usuario, campos);
+		UsuarioEntidad usuarioActualizado = servicio.guardar(usuario);
+		UsuarioRes res = mapa.obtenerRespuesta(usuarioActualizado);
+		return new ResponseEntity<>(res, HttpStatus.OK);
+	}
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> eliminar(@PathVariable("id") Long id) {
+		if(servicio.obtenerUno(id) == null) return ResponseEntity.notFound().build();
+		servicio.eliminar(id);
+		return ResponseEntity.noContent().build();
+	}
+	@RequestMapping(method = RequestMethod.OPTIONS)
+	public ResponseEntity<String> verMetodos() {
+		HttpHeaders encabezados = new HttpHeaders();
+        encabezados.add("Allow", "GET, POST, PUT, DELETE, HEAD, OPTIONS");
+        return new ResponseEntity<>(encabezados.toString(), HttpStatus.OK);
+	}
+}

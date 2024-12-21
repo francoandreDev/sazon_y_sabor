@@ -1,0 +1,23 @@
+package sazon_y_sabor.negocio.comentarios;
+
+@Service
+public class ServicioComentario implements IServicioComentario {
+	@Autowired
+	private IRepositorioComentario repositorio;
+	@Override
+	public List<EntidadComentario> obtenerTodos() {
+		return repositorio.findAll();
+	}
+	@Override
+	public EntidadComentario obtenerUno(Long id) {
+		return repositorio.findById(id).orElse(null);
+	}
+	@Override
+	public EntidadComentario guardar(EntidadComentario comentario) {
+		return repositorio.save(comentario);
+	}
+	@Override
+	public void eliminar(Long id) {
+		repositorio.deleteById(id);
+	}
+}

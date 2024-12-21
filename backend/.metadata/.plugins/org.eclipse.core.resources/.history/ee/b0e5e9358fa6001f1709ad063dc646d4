@@ -1,0 +1,45 @@
+package sazon_y_sabor.negocio.usuarios;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+public class TestUsuarioServicio {
+	@Mock
+    private IUsuarioRepositorio repositorio;
+    @InjectMocks
+    private UsuarioServicio servicio;
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this); 
+    }
+    @Test
+    void testGuardarUsuario() {
+        UsuarioEntidad usuario = new UsuarioEntidad(null, "Carlos", "carlos@ejemplo.com", "secreta", "123456789");
+        when(repositorio.save(usuario)).thenReturn(usuario);
+        UsuarioEntidad usuarioGuardado = servicio.guardar(usuario);
+        assertThat(usuarioGuardado).isEqualTo(usuario);
+        verify(repositorio, times(1)).save(usuario); 
+    }
+    @Test
+    void testObtenerUsuarioPorId() {
+        Long id = 1L;
+        UsuarioEntidad usuario = new UsuarioEntidad(id, "Juan", "juan@ejemplo.com", "1234", "987654321");
+        when(repositorio.findById(id)).thenReturn(Optional.of(usuario));
+        UsuarioEntidad usuarioEncontrado = servicio.obtenerUno(id);
+        assertThat(usuarioEncontrado).isEqualTo(usuario);
+    }
+    @Test
+    void testEliminarUsuario() {
+        Long id = 1L;
+        servicio.eliminar(id);
+        verify(repositorio, times(1)).deleteById(id);
+    }
+}

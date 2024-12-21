@@ -1,0 +1,5 @@
+package sazon_y_sabor.negocio.comentarios;
+
+public interface IComentarioRepositorio {
+
+}

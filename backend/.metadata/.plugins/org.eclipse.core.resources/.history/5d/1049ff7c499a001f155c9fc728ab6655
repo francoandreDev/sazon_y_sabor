@@ -1,0 +1,74 @@
+package sazon_y_sabor.negocio.comentarios;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/v1/comentarios")
+public class ComentarioControlador {
+	 @Autowired
+	 private IComentarioServicio servicio;
+	 @Autowired
+	 private ComentarioMapeador mapa;
+	 @GetMapping
+	 public ResponseEntity<List<ComentarioRes>> obtenerTodos() {
+		 List<ComentarioEntidad> comentarios = servicio.obtenerTodos();
+		 if(comentarios.size() == 0) return ResponseEntity.noContent().build();
+		 List<ComentarioRes> res = comentarios.stream()
+			 .map(mapa::obtenerRespuesta)
+			 .collect(Collectors.toList());
+		 return new ResponseEntity<>(res, HttpStatus.OK);
+	 }
+	 @GetMapping("/{id}")
+	 public ResponseEntity<ComentarioRes> obtenerUno(@PathVariable("id") Long id) {
+		 EntidadComentario comentario = servicio.obtenerUno(id);
+		 if(comentario == null) return ResponseEntity.notFound().build();
+		 ResComentario res = mapa.obtenerRespuesta(comentario);
+		 return new ResponseEntity<>(res, HttpStatus.OK);
+	 }
+	 @PostMapping
+	 public ResponseEntity<ResComentario> crear(@RequestBody ReqComentario req) {
+		 EntidadComentario comentario = mapa.obtenerEntidad(req);
+		 EntidadComentario nuevoComentario = servicio.guardar(comentario);
+		 ResComentario res = mapa.obtenerRespuesta(nuevoComentario);
+		 return new ResponseEntity<>(res, HttpStatus.CREATED);
+	 }
+	 @PutMapping("/{id}")
+	 public ResponseEntity<ResComentario> reemplazar(
+		 @PathVariable("id") Long id, @RequestBody ReqComentario req
+	 ) {
+		 EntidadComentario comentario = servicio.obtenerUno(id);
+		 if(comentario == null) return ResponseEntity.notFound().build();
+		 comentario = mapa.actualizarEntidad(comentario, req);
+		 EntidadComentario comentarioActualizado = servicio.guardar(comentario);
+		 ResComentario res = mapa.obtenerRespuesta(comentarioActualizado);
+		 return new ResponseEntity<>(res, HttpStatus.OK);
+	 }
+	 @PatchMapping("/{id}")
+	 public ResponseEntity<ResComentario> actualizar(
+		 @PathVariable("id") Long id, @RequestBody Map<String, Object> campos
+	 ) {
+		 EntidadComentario comentario = servicio.obtenerUno(id);
+		 if(comentario == null) return ResponseEntity.notFound().build();
+		 comentario = mapa.actualizarParcialEntidad(comentario, campos);
+		 EntidadComentario comentarioActualizado = servicio.guardar(comentario);
+		 ResComentario res = mapa.obtenerRespuesta(comentarioActualizado);
+		 return new ResponseEntity<>(res, HttpStatus.OK);
+	 }
+	 @DeleteMapping("/{id}")
+	 public ResponseEntity<Void> eliminar(@PathVariable("id") Long id) {
+		 if(servicio.obtenerUno(id) == null) return ResponseEntity.notFound().build();
+		 servicio.eliminar(id);
+		 return ResponseEntity.noContent().build();
+	 }
+	 @RequestMapping(method = RequestMethod.OPTIONS)
+	 public ResponseEntity<String> verMetodos() {
+		 HttpHeaders encabezados = new HttpHeaders();
+		 encabezados.add("Allow", "GET, POST, PUT, DELETE, HEAD, OPTIONS");
+		 return new ResponseEntity<>(encabezados.toString(), HttpStatus.OK);
+	 }
+}

@@ -1,0 +1,63 @@
+package sazon_y_sabor.negocio.usuarios;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class TestUsuarioControlador {
+	@LocalServerPort
+	private int port;
+	@Autowired
+	private TestRestTemplate restTemplate;
+	@Test
+    void testCrearUsuario() {
+        UsuarioReq nuevoUsuario = new UsuarioReq(
+                "Juan Perez", "juan@example.com", "secreta123", "123456789"
+        );
+        UsuarioRes response = restTemplate.postForObject(
+                "http://localhost:" + port + "/api/v1/usuarios", nuevoUsuario, UsuarioRes.class);
+        assertThat(response).isNotNull();
+        assertThat(response.correo()).isEqualTo("juan@example.com");
+        assertThat(response.nombre()).isEqualTo("Juan Perez");
+    }
+    @Test
+    void testObtenerTodosUsuarios() {
+        UsuarioRes[] usuarios = restTemplate.getForObject(
+                "http://localhost:" + port + "/api/v1/usuarios", UsuarioRes[].class);
+        assertThat(usuarios).isNotNull();
+        assertThat(usuarios.length).isGreaterThan(0);
+    }
+    @Test
+    void testObtenerUsuarioPorId() {
+        UsuarioReq nuevoUsuario = new UsuarioReq(
+                "Carlos Ruiz", "carlos@example.com", "password123", "987654321"
+        );
+        UsuarioRes usuarioCreado = restTemplate.postForObject(
+                "http://localhost:" + port + "/api/v1/usuarios", nuevoUsuario, UsuarioRes.class);
+        Long usuarioId = usuarioCreado.id();
+        UsuarioRes usuarioObtenido = restTemplate.getForObject(
+                "http://localhost:" + port + "/api/v1/usuarios/" + usuarioId, UsuarioRes.class);
+        assertThat(usuarioObtenido).isNotNull();
+        assertThat(usuarioObtenido.correo()).isEqualTo("carlos@example.com");
+    }
+    @Test
+    void testEliminarUsuario() {
+        UsuarioReq nuevoUsuario = new UsuarioReq(
+                "Eliminado", "eliminado@example.com", "1234", "123456789"
+        );
+        UsuarioRes usuarioCreado = restTemplate.postForObject(
+                "http://localhost:" + port + "/api/v1/usuarios", nuevoUsuario, UsuarioRes.class);
+        Long usuarioId = usuarioCreado.id();
+        restTemplate.delete("http://localhost:" + port + "/api/v1/usuarios/" + usuarioId);
+        ResponseEntity<String> response = restTemplate.getForEntity(
+                "http://localhost:" + port + "/api/v1/usuarios/" + usuarioId, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+}

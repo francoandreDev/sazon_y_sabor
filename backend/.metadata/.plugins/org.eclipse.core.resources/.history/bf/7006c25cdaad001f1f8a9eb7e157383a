@@ -1,0 +1,32 @@
+package sazon_y_sabor.negocio.usuarios;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UsuarioServicio implements IUsuarioServicio {
+	@Autowired
+	private IUsuarioRepositorio repositorio;
+	@Override
+	public List<UsuarioEntidad> obtenerTodos() {
+		return repositorio.findAll();
+	}
+
+	@Override
+	public UsuarioEntidad obtenerUno(Long id) {
+		return repositorio.findById(id).orElse(null);
+	}
+
+	@Override
+	public UsuarioEntidad guardar(UsuarioEntidad usuario) {
+		return repositorio.save(usuario);
+	}
+
+	@Override
+	public void eliminar(Long id) {
+		repositorio.deleteById(id);
+	}
+
+}

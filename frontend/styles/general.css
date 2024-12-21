@@ -1,0 +1,147 @@
+body {
+  font-family: "Mate SC", serif;
+  background-color: #350102;
+}
+.secT {
+  padding-left: 25%;
+  padding-right: 25%;
+}
+.subtitulo {
+  font-size: 4rem;
+  text-align: center;
+}
+.subtituloMenu {
+  margin-top: 10rem;
+  text-align: center;
+  font-size: 3rem;
+}
+.contenidoText {
+  text-align: center;
+  font-size: 2rem;
+}
+.contenidoText2 {
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.fondo {
+  background-color: #f1dbdb;
+}
+.fondoblanco {
+  background-color: #ffffff;
+}
+.cuadro {
+  margin-top: 5%;
+  text-align: center;
+}
+.navbar {
+  background-color: rgba(104, 34, 34, 0.5);
+  transition: background-color 0.3s ease;
+}
+
+.navbar.scrolled {
+  background-color: rgb(17, 1, 1);
+}
+
+nav .nav-item a {
+  color: white;
+  border-radius: 10px;
+}
+nav .nav-item a:hover {
+  background-color: white;
+  border: none;
+}
+
+.logo_res {
+  width: 8rem;
+}
+.logo_login {
+  width: 2rem;
+  color: white;
+}
+.seccion {
+  padding: 6rem 0;
+}
+
+.seccion_login {
+  padding: 25rem 0;
+}
+
+.footer {
+  padding: 3rem 0;
+  color: white;
+  text-align: center;
+}
+.oscuro {
+  background-color: black;
+}
+
+#secNosotros {
+  position: relative;
+  overflow: hidden;
+}
+
+.fondoNosotros {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("https://www.exquisitoperu.com/wp-content/uploads/2019/03/mayta.jpg");
+  background-size: cover;
+  background-position: center;
+  filter: blur(15px);
+  z-index: 1;
+}
+
+.fondoNosotros::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 2;
+}
+
+#secNosotros .container {
+  position: relative;
+  z-index: 3;
+  color: rgb(255, 255, 255);
+}
+#carouselExampleSlidesOnly {
+  height: 650px;
+  overflow: hidden;
+}
+
+.carousel-inner img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.fixed-height {
+  height: 500px;
+  width: 100%;
+  object-fit: cover;
+}
+.mens {
+  height: 780px;
+  width: 800px;
+  border-radius: 10px;
+}
+.menma {
+  height: 780px;
+  width: 800px;
+  border-radius: 10px;
+}
+.menb {
+  height: 780px;
+  width: 800px;
+  border-radius: 10px;
+}
+.menp {
+  height: 780px;
+  width: 800px;
+  border-radius: 10px;
+}

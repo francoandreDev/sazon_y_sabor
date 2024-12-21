@@ -1,0 +1,67 @@
+package sazon_y_sabor.negocio.usuarios;
+
+import java.util.Map;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class UsuarioMapeador {
+	// Entity -> DTORes
+	public UsuarioRes obtenerRespuesta(UsuarioEntidad usuario) {
+		if(usuario == null) return null;
+		return new UsuarioRes(
+			usuario.getId(), 
+			usuario.getNombre(), 
+			usuario.getCorreo(), 
+			usuario.getRol(),
+			usuario.getContrasena(), 
+			usuario.getTelefono(),
+			usuario.getComentarios(),
+			usuario.getPagos(),
+			usuario.getReservas()
+		);
+	}
+	// DTOReq -> Entity
+	public UsuarioEntidad obtenerEntidad(UsuarioReq req) {
+		if (req == null) return null;
+		return new UsuarioEntidad(
+			null, 
+			req.nombre(), 
+			req.correo(), 
+			req.rol(),
+			req.contrasena(), 
+			req.telefono()
+		);
+	}
+	// Entity <= DTOReq
+	public UsuarioEntidad actualizarEntidad(UsuarioEntidad usuario, UsuarioReq req) {
+		usuario.setNombre(req.nombre());
+		usuario.setCorreo(req.correo());
+		usuario.setRol(req.rol());
+		usuario.setContrasena(req.contrasena());
+		usuario.setTelefono(req.telefono());
+		return usuario;
+	}
+	// Entity <- DTOReq
+	public UsuarioEntidad actualizarParcialEntidad(UsuarioEntidad usuario, Map<String, Object> campos) {
+		campos.forEach((clave, valor) -> {
+			switch(clave) {
+				case "nombre": 
+					usuario.setNombre((String) valor);
+					break;
+				case "correo":
+					usuario.setCorreo((String) valor);
+					break;
+				case "rol":
+					usuario.setRol((String) valor);
+				case "contrasena":
+					usuario.setContrasena((String) valor);
+					break;
+				case "telefono":
+					usuario.setTelefono((String) valor);
+					break;
+			}
+		});
+		return usuario;
+	}
+}

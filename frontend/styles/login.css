@@ -1,0 +1,142 @@
+#secLogin {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fondoLogin {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("https://i.pinimg.com/1200x/78/b0/a5/78b0a5446798825b4bbb293fbc7316c1.jpg");
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px);
+  z-index: 1;
+}
+
+.fondoLogin::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+.login-container {
+  display: flex;
+  position: relative;
+  z-index: 3;
+  width: 90%;
+  max-width: 1200px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.text-content {
+  flex: 1;
+  color: white;
+  padding-right: 2rem;
+}
+
+.text-content h1 {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.text-content p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.form-content {
+  flex: 1;
+  max-width: 350px;
+  min-height: 400px;
+  background: white;
+  padding: 4rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.form_title {
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+
+  text-align: center;
+  color: #271001;
+}
+
+.form-group {
+  margin-bottom: 1.8rem;
+  position: relative;
+}
+
+.form_input {
+  width: 100%;
+  background: none;
+  font-size: 1rem;
+  padding: 1rem 0.5rem;
+  border: none;
+  border-bottom: 2px solid #ddd;
+  outline: none;
+}
+
+.form_label {
+  position: absolute;
+  top: 0;
+  left: 0.5rem;
+  font-size: 1rem;
+  color: #aaa;
+  translate: 0 2rem;
+  transition: transform 0.3s, color 0.3s;
+}
+
+:has(.form_input:focus) > .form_label,
+:has(.form_input:not(:placeholder-shown)) + .form_label {
+  transform: translateY(-2.5rem);
+  font-size: 0.85rem;
+  color: #444cf7;
+  -webkit-transform: translateY(-2.5rem);
+  -moz-transform: translateY(-2.5rem);
+  -ms-transform: translateY(-2.5rem);
+  -o-transform: translateY(-2.5rem);
+}
+
+.btn {
+  margin-top: 0.8rem;
+  background-color: #444cf7;
+  color: white;
+  font-size: 1rem;
+  padding: 0.8rem 0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #3338d1;
+}
+
+.form-link {
+  display: block;
+  margin-top: 1rem;
+  text-align: center;
+  color: #444cf7;
+  text-decoration: none;
+}
+
+.form-link:hover {
+  text-decoration: underline;
+}

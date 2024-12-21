@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="sazon_y_sabor.negocio.mesas.MesaServicio"/>
+    <fullyQualifiedTypeName name="org.springframework.boot.test.context.SpringBootTest"/>
+    <fullyQualifiedTypeName name="org.springframework.boot.test.web.server.LocalServerPort"/>
+    <fullyQualifiedTypeName name="org.springframework.boot.test.web.client.TestRestTemplate"/>
+    <fullyQualifiedTypeName name="org.springframework.http.HttpStatus"/>
+    <fullyQualifiedTypeName name="org.springframework.http.ResponseEntity"/>
+    <fullyQualifiedTypeName name="org.mockito.Mock"/>
+    <fullyQualifiedTypeName name="org.mockito.InjectMocks"/>
+    <fullyQualifiedTypeName name="org.junit.jupiter.api.BeforeEach"/>
+    <fullyQualifiedTypeName name="org.mockito.MockitoAnnotations"/>
+    <fullyQualifiedTypeName name="org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest"/>
+    <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
+    <fullyQualifiedTypeName name="org.junit.jupiter.api.Test"/>
+    <fullyQualifiedTypeName name="java.util.Optional"/>
+</qualifiedTypeNameHistroy>
