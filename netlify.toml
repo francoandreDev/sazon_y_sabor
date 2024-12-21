@@ -1,3 +1,7 @@
 [build]
   publish = "frontend"
-  command = "" 
+  command = ""
+
+  [[plugins]]
+  package = "@netlify/plugin-ignore-files"
+  config = { files = ["backend", ".gitmodules"] } 
